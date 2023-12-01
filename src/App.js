@@ -16,9 +16,9 @@ function App() {
           <GlobalStyle/>
           <BrowserRouter>
               <Login/>
-            <Routes>
+            {/* <Routes>
               <Route path='/pages' element={<Home/>}/>
-            </Routes>
+            </Routes> */}
           </BrowserRouter>
         </AuthContextProvider>
       </QueryClientProvider>

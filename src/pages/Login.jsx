@@ -15,27 +15,16 @@ function Login() {
     //구글 로그인 버튼
     const googleLogin = async() => {
         const user = await login();
-        navigate('/pages/home');
+        // navigate('/pages/home');
     }
 
-    const loginEvent = async(e) => {
-        e.preventDefault();
-        try{
-            const user = await emailLogin(email, password);
-            if(user){
-                navigate('/pages/home')
-            }else{
-                setErrorMsg('아이디나 비밀번호가 일치하지 않습니다.');
-            }
-        }catch(error){
-            console.error(error);
-        }
-    }
 
     return (
         <LoginPage>
             <h1>새로운 HR의 시작, Better Log</h1>
-            <form onSubmit={loginEvent}>
+
+            <button onClick={googleLogin}>Google 계정으로 로그인</button>
+            {/* <form>
                 <div className='inputLine'>
                     <FiMail className='loginIco'/>
                     <input type='email' placeholder='이메일 주소' 
@@ -48,10 +37,9 @@ function Login() {
                 </div>
                 <button type='submit'>로그인하기</button>
                 {errorMsg && <span className='errorTxt'>{errorMsg}</span>}
-                <button onClick={googleLogin}>Google 계정으로 로그인</button>
                 <button type='button' onClick={joinEmail}>회원가입</button>
                 <button type='button'>비밀번호를 잊으셨나요?</button>
-            </form>
+            </form> */}
 
         </LoginPage>
     );
