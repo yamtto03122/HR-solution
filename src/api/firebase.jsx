@@ -44,8 +44,8 @@ export async function login(){
 
 
 // 로그인 정보를 유지
-export async function onUserState(callback){
-    onAuthStateChanged(auth, async(user)=>{
+export function onUserState(callback){
+    return onAuthStateChanged(auth, async(user)=>{
         // onAuthStateChanged = 사용자의 인증 상태 변화를 체크하는 이벤트 리스너 (로그인, 로그아웃)
         if(user){ //if가 없으면 try에서 오류가 뜰 수 있기 때문에유저가 있으면 정보를 넘기고, 아니라면 비워놔라
             try{
@@ -55,6 +55,7 @@ export async function onUserState(callback){
             }catch(error){
                 console.error(error);
             }
+            console.log('success');
         }else{ //로그인된 상태가 아니라면
             callback(null); //빈 값으로 보내라
         }
@@ -76,38 +77,40 @@ async function adminUser(user){
             //원래 사용자 정보와 새 정보와 isAdmin 변수를 새 배열에 추가하여 업데이트 후 반환한다.
         }
         return user;
+        console.log(user);
     }catch(error){
         console.error(error)
     }
 }
 
 
-// //구글 로그아웃
-// export async function logOut(){
-//     try{
-//         await signOut(auth); //auth를 초기화 하는 이벤트 (파이어베이스에서 제공하는 signOut 훅을 사용)
-//     }catch(error){
-//         console.error(error)
-//     }
-// }
-
-// //로그인 시 자동 로그인 현상 수정
-// provider.setCustomParameters({
-//     prompt : 'select_account'
-// })
+//구글 로그아웃
+export async function logOut(){
+    try{
+        await signOut(auth); //auth를 초기화 하는 이벤트 (파이어베이스에서 제공하는 signOut 훅을 사용)
+    }catch(error){
+        console.error(error)
+    }
+}
 
 
-// // 이메일 회원가입 저장
-// export async function joinEmail(email, password){
-//     const auth = getAuth(); //저장할 사용자 인증 폼을 불러옴
-//     try{
-//         const userCradit = await createUserWithEmailAndPassword(auth, email, password);
-//         const user = userCradit.user;
-//         return user
-//     }catch(error){
-//         console.error(error);
-//     }
-// }
+//로그인 시 자동 로그인 현상 수정
+provider.setCustomParameters({
+    prompt : 'select_account'
+})
+
+
+// 이메일 회원가입 저장
+export async function joinEmail(email, password){
+    const auth = getAuth(); //저장할 사용자 인증 폼을 불러옴
+    try{
+        const userCradit = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCradit.user;
+        return user
+    }catch(error){
+        console.error(error);
+    }
+}
 
 // // 이메일 로그인 정보 받아오기
 // export async function emailLogin(email, password){

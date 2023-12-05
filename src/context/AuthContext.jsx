@@ -18,6 +18,7 @@ export function AuthContextProvider({children}){
         };
 
         const unSubScribeFunc = onUserState(userChange); // 위에서 새로 업데이트 된 사용자를 onUserState로 넘김
+        console.log(typeof unSubScribeFunc)
         setUnSubScribe(()=>unSubScribeFunc);
 
         return () => {
@@ -36,8 +37,7 @@ export function AuthContextProvider({children}){
     )
 }
 
-export function useAuthContext(){
+export function useAuthContext(){ //위의 함수들을 단순화시켜서 다른 곳에서 참조할 수 있도록 export(내보내기)함
     return useContext(AuthContext);
 }
 
-//위의 함수들을 단순화시켜서 다른 곳에서 참조할 수 있도록 export(내보내기)함

@@ -3,11 +3,54 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Login from './pages/Login';
+import { BrowserRouter, Navigate, Route, Router, RouterProvider, Routes, createBrowserRouter } from 'react-router-dom';
+import { useAuthContext } from './context/AuthContext';
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+import Join from './pages/Join';
+import Nav from './component/Nav';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+//관리자 인증
+// const ProtecRoute = ({checkAdmin, children}) => {
+//   const { user } = useAuthContext();
+//   if(!user || (checkAdmin && !user.isAdmin)){
+//     return <Navigate to='/' replace/>
+//   }
+// }
+
+// 회원 인증
+const GetHome = (children) => {
+  const { user } = useAuthContext();
+  if(!user){
+    return <Navigate to='/login' replace />
+  }
+  return children;
+}
+
+const routes = createBrowserRouter([
+  {
+    path : '/',
+    element : <App />,
+    errorElement : <NotFound/>,
+
+    children : [
+      {path : 'login', element : <Login/>},
+      {path : '/home',
+      element :
+        <GetHome checkUser>
+          {<Home/>}
+        </GetHome> },
+      {path : '/join', element : <Join/>},
+      {path : '/nav', element : <Nav/>}
+    ]
+  }
+])
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={routes}/>
   </React.StrictMode>
 );
 
