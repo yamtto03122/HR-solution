@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FiMail } from "react-icons/fi";
 import { LuKeyRound } from "react-icons/lu";
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ function Login() {
     //구글 로그인 버튼
     const googleLogin = async() => {
         const user = await login();
-        navigate('/home'); //메인페이지로 이동
+        navigate('/'); //메인페이지로 이동
     }
 
 

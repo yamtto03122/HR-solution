@@ -49,7 +49,7 @@ export function onUserState(callback){
         // onAuthStateChanged = 사용자의 인증 상태 변화를 체크하는 이벤트 리스너 (로그인, 로그아웃)
         if(user){ //if가 없으면 try에서 오류가 뜰 수 있기 때문에유저가 있으면 정보를 넘기고, 아니라면 비워놔라
             try{
-                const updateUser = adminUser(user); //로그인한 사람이 어드민인지 어드민이 아닌지 구별
+                const updateUser = await adminUser(user); //로그인한 사람이 어드민인지 어드민이 아닌지 기다렸다가 실행 구별
                 //사용자가 로그인 한 경우 adminUser라는 함수를 실행해서 사용자 권한을 체크
                 callback(updateUser); //업데이트 된 사용자 정보를 전달받은 후, 콜백으로 호출
             }catch(error){
@@ -122,3 +122,15 @@ export async function joinEmail(email, password){
 //     }
 // }
 
+
+// 업무시간 저장하기
+
+export async function updateWorkTime(){
+    try{
+        const workTimeRef = ref(database, `/workTime`);
+        await set(workTimeRef);
+
+    }catch(error){
+        console.error(error);
+    }
+}

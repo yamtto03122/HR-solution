@@ -6,7 +6,7 @@ import { logOut, onUserState } from '../api/firebase';
 import styled from 'styled-components';
 
 function Nav() {
-    const { user, logOut } = useAuthContext();
+    // const { user, logOut } = useAuthContext();
     const [userInfo, setUserInfo] = useState();
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ function Nav() {
     }
 
     useEffect(()=>{
-        onUserState((userInfo) => {
+        onUserState((userInfo) => { //firebase.jsx에서 받아온 onUserState
             setUserInfo(userInfo);
         })
     },[])
@@ -24,13 +24,21 @@ function Nav() {
     return (
         <NavContaier>
             <>
-                {user && <UserDatas user={userInfo}/>}
-                <Link to='/login'>
-                    <button onClick={userLogOut} className='logoutBtn'>
-                        로그아웃
-                    </button>
-                </Link>
+                {userInfo && <UserDatas user={userInfo}/>}
             </>
+            <ul>
+                <li><Link to='/home'>홈피드</Link></li>
+                <li><Link to='/home'>구성원</Link></li>
+                <li><Link to='/home'>근무</Link></li>
+                <li><Link to='/home'>휴가</Link></li>
+                <li><Link to='/home'>급여</Link></li>
+                
+            </ul>
+            <Link to='/login' className='logoutBtn'>
+                <button onClick={userLogOut}>
+                    로그아웃
+                </button>
+            </Link>
         </NavContaier>
     );
 }
@@ -42,5 +50,22 @@ const NavContaier = styled.nav`
     left: 0;
     top: 0;
     height: 100%;
-    width: 300px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 35px;
+    background-color: #f1f1f1;
+    .logoutBtn{
+
+    }
+    ul{
+        li{
+            margin: 25px 0;
+            a{
+                width: 100%;
+                display: block;
+            }
+        }
+    }
+    
 `
