@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { ref, get, set, getDatabase, remove } from 'firebase/database';
+import { v4 as uuid } from 'uuid' //고유 식별자를 생성해주는 패키지
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -37,6 +38,7 @@ export async function login(){
         const user = loginPopup.user; //user =  로그인된 상태의 유저
         //위의 코드로 로그인이 성공하는 순간 loginPopup 에는 로그인한 정보가 user라는 변수에 담기게된다.
         console.log(user);
+        const userName = user;
 
         return user; //로그인된 유저의 정보를 다른 곳에서 참조할 수 있도록 반환함
     }catch(error){
@@ -79,7 +81,6 @@ async function adminUser(user){
             //원래 사용자 정보와 새 정보와 isAdmin 변수를 새 배열에 추가하여 업데이트 후 반환한다.
         }
         return user;
-        console.log(user);
     }catch(error){
         console.error(error)
     }
@@ -103,10 +104,11 @@ provider.setCustomParameters({
 
 
 // 이메일 회원가입 저장
-export async function joinEmail(email, password){
+export async function joinEmail(email, password, userName){
     const auth = getAuth(); //저장할 사용자 인증 폼을 불러옴
     try{
-        const userCradit = await createUserWithEmailAndPassword(auth, email, password);
+        const userCradit = await createUserWithEmailAndPassword(auth, email, password).then((userdata)=>{
+            return userdata.user.updateProfile({displayName : userName})});
         const user = userCradit.user;
         return user
     }catch(error){
@@ -114,27 +116,32 @@ export async function joinEmail(email, password){
     }
 }
 
-// // 이메일 로그인 정보 받아오기
-// export async function emailLogin(email, password){
-//     try{
-//         const userCradit = await signInWithEmailAndPassword(auth, email, password);
-//         return userCradit.user
-//     }catch(error){
-//         console.error(error);
-//     }
-// }
+// 이메일 로그인 정보 받아오기
+export async function emailLogin(email, password){
+    try{
+        const userCradit = await signInWithEmailAndPassword(auth, email, password);
+        return userCradit.user
+    }catch(error){
+        console.error(error);
+    }
+}
+
+//중복 아이디 체크
+export async function checkEmail(email){ //이메일만 체크하면 됨
+    const database = getDatabase();
+    const userRef = ref();
+}
 
 
 //  출퇴근시간 저장하기
 
-export async function workRecord(user, endWork){
-    try{
-        
-        await set(ref(database, `/workTime/${user}`),endWork)
-        
-    }catch(error){
-        console.error(error);
-    }
+export async function workRecord(onSubmit, user ){
+       
+    const id = user;
+    
+        console.log(`${id}/workTime/`)
+        await set(ref(database, `user/${id}/workTime`),onSubmit)
+    
 }
 
 // //  퇴근시간 저장하기

@@ -18,66 +18,47 @@ function Login() {
         navigate('/'); //메인페이지로 이동
     }
 
+    const loginEvent = async (e) => {
+        e.preventDefault();
+        try{
+            const user = await emailLogin(email, password);
+            // console.log(user)
+            if(user){
+                navigate('/');
+            }else{
+                setErrorMsg('아이디나 비밀번호가 일치하지 않습니다.');
+            }
+        }catch(error){
+            console.error(error);
+        }
+    }
+
 
     return (
-        <LoginPage>
+        <div className='loginPage'>
             <h1>새로운 HR의 시작, Better Log</h1>
 
-            <form>
-                {/* <div className='inputLine'>
+            <form onSubmit={loginEvent}>
+                <div className='inputLine'>
                     <FiMail className='loginIco'/>
-                    <input type='email' placeholder='이메일 주소' />
-                    value={email} onChange={(e)=>setEmail(e.target.value)}
+                    <input type='email' placeholder='이메일 주소'
+                    value={email} onChange={(e)=>setEmail(e.target.value)} />
                 </div>
                 <div className='inputLine'>
                     <LuKeyRound className='loginIco'/>
-                    <input type='password' placeholder='비밀번호'/> 
-                    value={password} onChange={(e)=>setPassword(e.target.value)}
+                    <input type='password' placeholder='비밀번호'
+                    value={password} onChange={(e)=>setPassword(e.target.value)}/> 
                 </div>
                 <button type='submit'>로그인하기</button>
                 {errorMsg && <span className='errorTxt'>{errorMsg}</span>}
-                <button type='button'>비밀번호를 잊으셨나요?</button> */}
-                <button type='button' onClick={googleLogin}>Google 계정으로 로그인</button>
+                <button type='button'>비밀번호를 잊으셨나요?</button>
             </form>
+                <button type='button' onClick={googleLogin}>Google 계정으로 로그인</button>
             <Link to='/join'>회원가입</Link>
+            <Link to='/admin'>관리자</Link>
 
-        </LoginPage>
+        </div>
     );
 }
 
 export default Login;
-
-const LoginPage = styled.div `
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    h1{
-        font-size: 35px;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    form{
-        display: flex;
-        flex-direction: column;
-        .inputLine{
-            display: flex;
-            font-size: 14px;
-            height: 56px;
-            padding-left: 18px;
-            border-radius: 8px;
-            background-color: #ffffff;
-            box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
-            .loginIco{
-                font-size: 23px;
-            }
-
-
-        }
-    }
-`

@@ -10,18 +10,19 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import Join from './pages/Join';
 import Nav from './component/Nav';
+import Admin from './pages/Admin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 //관리자 인증
-// const ProtecRoute = ({checkAdmin, children}) => {
-//   const { user } = useAuthContext();
-//   if(!user || (checkAdmin && !user.isAdmin)){
-//     return <Navigate to='/' replace/>
-//   }
-// }
+const ProtecRoute = ({checkAdmin, children}) => {
+  const { user } = useAuthContext();
+  if(!user || (checkAdmin && !user.isAdmin)){
+    return <Navigate to='/' replace/>
+  }
+}
 
-// 회원 인증
+//회원 인증
 const GetHome = (children) => {
   const { user } = useAuthContext();
   if(!user){
@@ -37,14 +38,10 @@ const routes = createBrowserRouter([
     errorElement : <NotFound/>,
 
     children : [
-      {path : 'login', element : <Login/>},
-      {path : '/home',
-      element :
-        <GetHome checkUser>
-          {<Home/>}
-        </GetHome> },
+      {path : '/nav', element : <Nav/>},
+      {path : '/login', element : <Login/>},
       {path : '/join', element : <Join/>},
-      {path : '/nav', element : <Nav/>}
+      {path : '/admin', element : <Admin/>}
     ]
   }
 ])

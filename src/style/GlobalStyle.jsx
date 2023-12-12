@@ -63,6 +63,41 @@ const GlobalStyle = createGlobalStyle`
         margin: 70px auto 100px;
     }
 
+    .loginPage{
+        display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    h1{
+        font-size: 35px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        .inputLine{
+            display: flex;
+            font-size: 14px;
+            height: 56px;
+            padding-left: 18px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+            .loginIco{
+                font-size: 23px;
+            }
+
+
+        }
+    }
+    }
+
 
 `
 

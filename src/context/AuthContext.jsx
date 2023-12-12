@@ -13,12 +13,13 @@ export function AuthContextProvider({children}){
     useEffect(()=>{
         const userChange = (newUser) => {
             console.log(newUser);
+            
             setUser(newUser);
             //새로운 사용자 데이터로 상태를 업데이트
         };
 
         const unSubScribeFunc = onUserState(userChange); // 위에서 새로 업데이트 된 사용자를 onUserState로 넘김
-        console.log(typeof unSubScribeFunc)
+        // console.log(typeof unSubScribeFunc)
         setUnSubScribe(()=>unSubScribeFunc);
 
         return () => {
@@ -30,7 +31,7 @@ export function AuthContextProvider({children}){
     
 
     return(
-        <AuthContext.Provider value={{user, login}}>
+        <AuthContext.Provider value={{user, login, logOut}}>
             {children}
             {/* {children} = 모든 하위 컴포넌트를 의미 */}
         </AuthContext.Provider>    
