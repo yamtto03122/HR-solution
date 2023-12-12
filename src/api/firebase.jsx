@@ -19,6 +19,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+export {app};
+
 const auth = getAuth(); //파이어베이스에 있는 인증을 초기화해줌
 const provider = new GoogleAuthProvider();
 const database = getDatabase(app);
@@ -123,14 +125,24 @@ export async function joinEmail(email, password){
 // }
 
 
-// 업무시간 저장하기
+//  출퇴근시간 저장하기
 
-export async function updateWorkTime(){
+export async function workRecord(user, endWork){
     try{
-        const workTimeRef = ref(database, `/workTime`);
-        await set(workTimeRef);
-
+        
+        await set(ref(database, `/workTime/${user}`),endWork)
+        
     }catch(error){
         console.error(error);
     }
 }
+
+// //  퇴근시간 저장하기
+
+// export async function endWorkRecord(user){
+//     try{
+//         ref(database, `/workTime/${user}`);
+//     }catch(error){
+//         console.error(error);
+//     }
+// }
