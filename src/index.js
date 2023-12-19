@@ -15,21 +15,21 @@ import Admin from './pages/Admin';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 //관리자 인증
-const ProtecRoute = ({checkAdmin, children}) => {
-  const { user } = useAuthContext();
-  if(!user || (checkAdmin && !user.isAdmin)){
-    return <Navigate to='/' replace/>
-  }
-}
+// const ProtecRoute = ({checkAdmin, children}) => {
+//   const { user } = useAuthContext();
+//   if(!user || (checkAdmin && !user.isAdmin)){
+//     return <Navigate to='/' replace/>
+//   }
+// }
 
-//회원 인증
-const GetHome = (children) => {
-  const { user } = useAuthContext();
-  if(!user){
-    return <Navigate to='/login' replace />
-  }
-  return children;
-}
+// //회원 인증
+// const GetHome = (children) => {
+//   const { user } = useAuthContext();
+//   if(!user){
+//     return <Navigate to='/login' replace />
+//   }
+//   return children;
+// }
 
 const routes = createBrowserRouter([
   {

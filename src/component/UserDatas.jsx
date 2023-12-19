@@ -1,66 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StopWorkTime } from './StopWorkTime';
-import { workRecord } from '../api/firebase';
+import { getWorkTime, workRecord } from '../api/firebase';
+import { clockIn, clockOut } from '../api/firebase';
+import { getDatabase, ref, set } from 'firebase/database';
 
-function UserDatas({user : {photoURL, displayName}}) {
+function UserDatas({user}) {
 
-    //  // 1. 출근버튼
-    // const [startWork, setStartWork] = useState();
-    
-    // // 2. 스톱 워치가 작동(running) 하고 있는지 여부
-    // const [isWorking, setIsWorking] = useState(false);
-
-    // // 3. 실시간으로 측정되고 있는 시간
-    // const [time, setTime] = useState(0);
-
-    // // 4. timer의 실시간(?)을 관리하는 변수 
-    // const intervalRef = useRef(undefined);
-
-    // // 5. 퇴근버튼
-    // const [endWork, setEndWork] = useState();
-
-    // // 6. 퇴근완료 메세지
-    // const [endMSG, setEndMSG] = useState('아직 출근 전입니다!');
-
-
-    // // 7. 파이어베이스 등록
-    // const onSubmit = async(e)=> {
-    //     e.preventDefault();
-    //     const currentTime = new Date();
-    //     try{
-    //         if(isWorking){ //퇴근 전송
-    //             setStartWork(currentTime);
-    //             setEndWork(currentTime); //파이어베이스 퇴근시간 전송
-    //             workRecord();
-    //         }
-
-    //     }catch(error){
-    //         console.error(error);
-    //     }
-        
-    // }
-
-   
-    // // 1. 스톱워치를 시작하고, 정지하는 함수
-    // const startStop = () => {
-    //     if(!isWorking) {
-    //         intervalRef.current = setInterval(()=>{
-    //             setTime((prevTime) => prevTime + 1000);
-    //         }, 1000);
-    //         setIsWorking(true);
-    //         setEndMSG('근무중입니다 :)');
-    //     } else {
-    //         clearInterval(intervalRef.current);
-    //         setIsWorking(true);
-    //         setEndMSG('수고하셨습니다!');
-    //     }
-    // }
-    
-    //  // 1. 출퇴근버튼
-    //  const [startWork, setStartWork] = useState();
-    
- 
      // 3. 실시간으로 측정되고 있는 시간
      const [time, setTime] = useState(0);
  
@@ -73,11 +19,9 @@ function UserDatas({user : {photoURL, displayName}}) {
 
      // 2. 스톱 워치가 작동(running) 하고 있는지 여부
      const [isWorking, setIsWorking] = useState(false);
- 
-     // 5. 퇴근버튼
-     const [endWork, setEndWork] = useState([]);
- 
 
+     //출근 시작 시간 체그
+     const [start, setStart] = useState('');
  
     
      // 1. 스톱워치를 시작하고, 정지하는 함수
@@ -87,13 +31,22 @@ function UserDatas({user : {photoURL, displayName}}) {
                  setTime((prevTime) => prevTime + 1000);
              }, 1000);
              setIsWorking(true);
-             setEndMSG('근무중입니다 :)');
+             setEndMSG('근무중');
          } else {
              clearInterval(intervalRef.current);
              setIsWorking(true);
              setEndMSG('수고하셨습니다!');
          }
+         setIsWorking(!isWorking);
      } 
+
+     const workIn = () => {
+        clockIn(user)
+        const today = new Date();
+        const timeff = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+        
+        return timeff
+     }
 
      
         // 날짜 출력
@@ -108,34 +61,44 @@ function UserDatas({user : {photoURL, displayName}}) {
     
          }
 
-     // 7. 퇴근시간 기록
-     const onSubmit = async(e)=> {
-        e.preventDefault();
-         const newRecord = {
-                    Day : getToday(),
-                    workTime : StopWorkTime(time),
-                };
-                workRecord(newRecord);
-                setEndWork((prevEndWork) => [...prevEndWork, newRecord]);
-                console.log(newRecord);
-     }
+    // 7. 퇴근시간 기록
+    const workOut = async (e) => {
+        //e.preventDefault();
+        const db = getDatabase();
+        const now = new Date();
+        const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        const workTime = StopWorkTime(time)
+        const workTimeRef = ref(db, `user/${user.displayName}/workTime/${dateKey}/workTime`);
+        set(workTimeRef, workTime);
+        clockOut(user)
+        setIsWorking(true);
+    };
 
     return (
         <UserItem>
-            <img src={photoURL} alt={displayName}/>
+            <img src={user.photoURL} alt={user.displayName}/>
             <div className='userWrap'>
                 <div className='userName'>
-                    <font>{displayName}</font>님,
+                    <font>{user.displayName}</font>님
                 </div>
-                <p>{endMSG}</p>
             </div>
                 <div className='timerZone'>
-                    <div className='workTimer'>{StopWorkTime(time)}</div>
+                
+                    <>
+                        <div className='workTimer'>{StopWorkTime(time)}</div>
+                        <p>{endMSG}</p>
+                    </>
+                    <></>
+                
                 </div>
                 <div className='workTimeWrap' onClick={startStop}>
                     {isWorking ? 
-                            <button onClick={onSubmit} className='stopBtn'>퇴근</button> : 
-                            <button className='startBtn'>출근</button>
+                        <>
+                            <div>{getWorkTime()}부터 근무중입니다.</div>
+                            <button onClick={() => workOut(user)} className='stopBtn'>근무 끝내기</button>
+                        </>
+                            : 
+                            <button className='startBtn' onClick={() => workIn(user)}>근무 시작하기</button>
                     }
                 </div>
         </UserItem>

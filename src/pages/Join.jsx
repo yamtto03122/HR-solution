@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function Join() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
+    const [name, setName] = useState('');
     const [psError,setPsError] = useState('')//패스워드 에러
     const navigate = useNavigate();
 
@@ -21,9 +21,9 @@ function Join() {
             return
         }
         try{
-            const user = await joinEmail(userName, email, password);
+            const user = await joinEmail(email, password, name);
             // console.log(user)
-            navigate('/login'); //로그인페이지로 이동
+            navigate('/'); //로그인페이지로 이동
         }catch(error){
             console.error(error);
         }
@@ -33,8 +33,8 @@ function Join() {
             <h2>JOIN</h2>
             <form onSubmit={signUpEvent}>
                 <div>
-                    <input type='text' placeholder='이름을 입력하세요.' value={userName}
-                    onChange={(e)=>setUserName(e.target.value)}/>
+                    <input type='text' placeholder='이름을 입력하세요.' value={name}
+                    onChange={(e)=>setName(e.target.value)}/>
                 </div>
                 <div>
                     <input type='email' placeholder='이메일을 입력하세요.' value={email}

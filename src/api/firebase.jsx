@@ -1,8 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-import { ref, get, set, getDatabase, remove } from 'firebase/database';
+import { ref, get, set, getDatabase, remove, child } from 'firebase/database';
+import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuid } from 'uuid' //고유 식별자를 생성해주는 패키지
+import { StopWorkTime } from "../component/StopWorkTime";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -104,17 +106,63 @@ provider.setCustomParameters({
 
 
 // 이메일 회원가입 저장
-export async function joinEmail(email, password, userName){
+export async function joinEmail(email, password, name){
     const auth = getAuth(); //저장할 사용자 인증 폼을 불러옴
     try{
-        const userCradit = await createUserWithEmailAndPassword(auth, email, password).then((userdata)=>{
-            return userdata.user.updateProfile({displayName : userName})});
-        const user = userCradit.user;
-        return user
+        const userCradit = await createUserWithEmailAndPassword(auth, email, password);
+        const { user } = userCradit.user;
+        //const photoURL = await uploadImage(photo); //프로필사진을 firebase storage에 업로드
+        await updateProfile(auth.currentUser, {displayName : name});
+        return user;
     }catch(error){
         console.error(error);
     }
 }
+
+//프로필사진 업로드
+// const uploadImage = async (url) => {
+//     // url 확인 
+//     if (url.startsWith("https")) {
+//         // http로 시작하는 경우 업로드 필요 없음
+//         return url;
+//     }
+    
+//     // 사진 저장 위한 blob 생성
+//     const blob = await new Promise((resolve, reject) => {
+//         // image 불러오기 위한 XML 만든다
+//         const xhr = new XMLHttpRequest();
+//         // imagePicker통해 선택된 사진을 blob형태로 가져온다
+//         xhr.open("GET", url, true);
+//         xhr.responseType = "blob";
+//         // XML 상태 확인
+//         xhr.onload = function () {
+//         // 성공하면 Promise의 값으로 xhr.response 반환
+//         resolve(xhr.response);
+//         };
+//         xhr.onerror = function () {
+//         // 실패하면 Promise의 값으로 Error 반환
+//         reject(new TypeError("Network request failed"));
+//         };
+//         // "GET" 인 경우에는 서버에 데이터를 보낼 필요 없음
+//         xhr.send(null);
+//     });
+   
+//     // user정보 가져와서 user별 폴더에 저장
+//     const user = auth.currentUser;
+//     const storage = getStorage();
+//     // storage에 업로드 경로 생성
+//     const profileRef = ref(storage, `/profile/${user.uid}/photo.png`);
+//     // blob(사진파일)을 경로에 업로드한다
+//     await uploadBytes(profileRef, blob, {
+//       connectType: "image/png",
+//     });
+//     blob.close();
+   
+//     // 업로드한 사진 주소 반환
+//     return await getDownloadURL(profileRef);
+//   }
+  
+  
 
 // 이메일 로그인 정보 받아오기
 export async function emailLogin(email, password){
@@ -133,23 +181,59 @@ export async function checkEmail(email){ //이메일만 체크하면 됨
 }
 
 
-//  출퇴근시간 저장하기
+// //  출퇴근시간 저장하기
 
-export async function workRecord(onSubmit, user ){
+// export async function workRecord(onSubmit, user ){
        
-    const id = user;
+//     const id = user;
     
-        console.log(`${id}/workTime/`)
-        await set(ref(database, `user/${id}/workTime`),onSubmit)
+//         console.log(`${id}/workTime/`)
+//         await set(ref(database, `user/${id}/workTime`),onSubmit)
     
+// }
+
+//출근 시간
+export async function clockIn(user) {
+    const db = getDatabase();
+    const now = new Date();
+    const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    const today = new Date();
+    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+
+    const clockInRef = ref(db, `user/${user.displayName}/workTime/${dateKey}/clockIn`);
+    set(clockInRef, time);
 }
 
-// //  퇴근시간 저장하기
+//퇴근 시간
+export function clockOut(user) {
+    const db = getDatabase();
+    const now = new Date();
+    const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    const today = new Date();
+    const nowTime = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
 
-// export async function endWorkRecord(user){
-//     try{
-//         ref(database, `/workTime/${user}`);
-//     }catch(error){
-//         console.error(error);
-//     }
-// }
+    const clockOutRef = ref(db, `user/${user.displayName}/workTime/${dateKey}/clockOut`);
+    set(clockOutRef, nowTime);
+}
+
+//데이터베이스에 저장된 시간 가져오기
+
+ export async function getWorkTime(user){
+    const dbRef =  ref(getDatabase());
+    const now = new Date();
+    const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+
+    try{
+        get(child(dbRef, `user/${user.displayName}/workTime/${dateKey}/clockOut`)).then((snapshot) =>{
+           
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+        } else {
+            console.log("No data available");
+        } 
+        })
+    }catch(error){
+        console.error(error);
+    }
+ }
+
