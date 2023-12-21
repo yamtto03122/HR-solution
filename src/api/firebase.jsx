@@ -219,21 +219,19 @@ export function clockOut(user) {
 //데이터베이스에 저장된 시간 가져오기
 
  export async function getWorkTime(user){
-    const dbRef =  ref(getDatabase());
+    const db = ref(getDatabase());
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-
-    try{
-        get(child(dbRef, `user/${user.displayName}/workTime/${dateKey}/clockOut`)).then((snapshot) =>{
+        get(child(db, `user/${user.displayName}/workTime/${dateKey}/clockIn`)).then((snapshot) =>{
            
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-        } else {
-            console.log("No data available");
-        } 
+            if (snapshot.exists()) {
+                console.log(Object.values(snapshot.val()));
+                return Object.values(snapshot.val())
+            } else {
+                console.log("No data available");
+            }
+
         })
-    }catch(error){
-        console.error(error);
-    }
  }
+
 

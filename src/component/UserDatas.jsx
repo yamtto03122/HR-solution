@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StopWorkTime } from './StopWorkTime';
-import { getWorkTime, workRecord } from '../api/firebase';
+import { getWorkTime } from '../api/firebase';
 import { clockIn, clockOut } from '../api/firebase';
 import { getDatabase, ref, set } from 'firebase/database';
+import { useQuery } from '@tanstack/react-query';
 
 function UserDatas({user}) {
 
@@ -20,10 +21,8 @@ function UserDatas({user}) {
      // 2. 스톱 워치가 작동(running) 하고 있는지 여부
      const [isWorking, setIsWorking] = useState(false);
 
-     //출근 시작 시간 체그
-     const [start, setStart] = useState('');
- 
     
+
      // 1. 스톱워치를 시작하고, 정지하는 함수
      const startStop = () => {
          if(!isWorking) {
@@ -40,14 +39,24 @@ function UserDatas({user}) {
          setIsWorking(!isWorking);
      } 
 
-     const workIn = () => {
-        clockIn(user)
-        const today = new Date();
-        const timeff = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-        
-        return timeff
-     }
 
+     //출근시간 확인
+     const [workCheck, setWorkCheck] = useState([]);
+     const workIn = async(user)=>{
+
+     //출근 시작 시간 체그
+            await clockIn(user)
+            const workCheckTime = await getWorkTime(user);
+            
+            setWorkCheck(workCheckTime);
+            //console.log(await getWorkTime(user));
+               
+     }
+     
+     useEffect(() => {
+        console.log(workCheck);
+      }, [workCheck]);
+ 
      
         // 날짜 출력
         const getToday = () => {
@@ -83,18 +92,18 @@ function UserDatas({user}) {
                 </div>
             </div>
                 <div className='timerZone'>
-                
+                {isWorking ? 
                     <>
                         <div className='workTimer'>{StopWorkTime(time)}</div>
                         <p>{endMSG}</p>
-                    </>
-                    <></>
+                    </>:
+                    <></>}
                 
                 </div>
                 <div className='workTimeWrap' onClick={startStop}>
                     {isWorking ? 
                         <>
-                            <div>{getWorkTime()}부터 근무중입니다.</div>
+                            <div>{workCheck}부터 근무중입니다.</div>
                             <button onClick={() => workOut(user)} className='stopBtn'>근무 끝내기</button>
                         </>
                             : 
