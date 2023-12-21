@@ -139,6 +139,7 @@ const UserItem = styled.div`
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        margin: 30px 0;
         .timerZone{
             width: 100%;
             box-sizing: border-box;
@@ -147,6 +148,7 @@ const UserItem = styled.div`
             padding: 15px;
             font-size: 15px;
             position: relative;
+            box-shadow: 1px 1px 5px 0px rgba(0,0,0, 0.1);
             .watchMSG{
                 font-weight: 500;
             }
@@ -173,6 +175,7 @@ const UserItem = styled.div`
             background: #ffffff;
             border-radius: 14px;
             padding: 10px;
+            box-shadow: 1px 1px 5px 0px rgba(0,0,0, 0.1);
             .userWrap{
                 width: 100%;
                 border: 1px solid #0cc321;

@@ -28,10 +28,10 @@ function Nav() {
             </>
             <ul>
                 <li><Link to='/'>홈피드</Link></li>
-                <li><Link to='/home'>구성원</Link></li>
-                <li><Link to='/home'>근무</Link></li>
-                <li><Link to='/home'>휴가</Link></li>
-                <li><Link to='/home'>급여</Link></li>
+                <li><Link to='/'>구성원</Link></li>
+                <li><Link to='/'>근무</Link></li>
+                <li><Link to='/'>휴가</Link></li>
+                <li><Link to='/'>급여</Link></li>
                 
             </ul>
             <Link to='/login' className='logoutBtn'>
