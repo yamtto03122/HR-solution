@@ -112,7 +112,7 @@ export async function joinEmail(email, password, name){
         const userCradit = await createUserWithEmailAndPassword(auth, email, password);
         const { user } = userCradit.user;
         //const photoURL = await uploadImage(photo); //프로필사진을 firebase storage에 업로드
-        await updateProfile(auth.currentUser, {displayName : name});
+        await updateProfile(auth.currentUser, {displayName : name, photoURL : 'https://github.com/yamtto03122/HR-solution/assets/134922108/e1969829-2fbb-4e7c-850d-d46f5535449d'});
         return user;
     }catch(error){
         console.error(error);
@@ -162,9 +162,9 @@ export async function joinEmail(email, password, name){
 //     return await getDownloadURL(profileRef);
 //   }
   
-  
 
-// 이메일 로그인 정보 받아오기
+
+//파이어베이스에서 이메일 로그인 정보 받아오기
 export async function emailLogin(email, password){
     try{
         const userCradit = await signInWithEmailAndPassword(auth, email, password);
@@ -198,7 +198,7 @@ export async function clockIn(user) {
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     const today = new Date();
-    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    const time = today.getHours() + '시 ' + today.getMinutes() + '분';
 
     const clockInRef = ref(db, `user/${user.displayName}/workTime/${dateKey}/clockIn`);
     set(clockInRef, time);
@@ -210,7 +210,7 @@ export function clockOut(user) {
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     const today = new Date();
-    const nowTime = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    const nowTime = today.getHours() + '시 ' + today.getMinutes() + '분';
 
     const clockOutRef = ref(db, `user/${user.displayName}/workTime/${dateKey}/clockOut`);
     set(clockOutRef, nowTime);
@@ -218,20 +218,19 @@ export function clockOut(user) {
 
 //데이터베이스에 저장된 시간 가져오기
 
- export async function getWorkTime(user){
+ export async function getWorkTime(user) {
     const db = ref(getDatabase());
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-        get(child(db, `user/${user.displayName}/workTime/${dateKey}/clockIn`)).then((snapshot) =>{
-           
-            if (snapshot.exists()) {
-                console.log(Object.values(snapshot.val()));
-                return Object.values(snapshot.val())
-            } else {
-                console.log("No data available");
-            }
-
-        })
- }
+    return get(child(db, `user/${user.displayName}/workTime/${dateKey}/clockIn`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            return snapshot.val()
+        } else {
+            console.log("No data available");
+            return ''
+        }
+    })
+}
 
 

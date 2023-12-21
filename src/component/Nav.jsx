@@ -27,7 +27,7 @@ function Nav() {
                 {userInfo && <UserDatas user={userInfo}/>}
             </>
             <ul>
-                <li><Link to='/home'>홈피드</Link></li>
+                <li><Link to='/'>홈피드</Link></li>
                 <li><Link to='/home'>구성원</Link></li>
                 <li><Link to='/home'>근무</Link></li>
                 <li><Link to='/home'>휴가</Link></li>
@@ -50,10 +50,10 @@ const NavContaier = styled.nav`
     left: 0;
     top: 0;
     height: 100%;
-    width: 260px;
+    width: 270px;
     display: flex;
     flex-direction: column;
-    padding: 50px 35px;
+    padding: 50px 30px;
     background-color: #f1f1f1;
     .logoutBtn{
 
