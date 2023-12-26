@@ -35,7 +35,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <AuthContextProvider>
-          <Outlet/>
+          <Nav/>
           <Routes>
             <Route path="/" element={
               <ProtectedRoute><Home /></ProtectedRoute>
@@ -47,6 +47,7 @@ function App() {
             } />
             
           </Routes>
+          <Outlet/>
         </AuthContextProvider>
       </QueryClientProvider>
     </>

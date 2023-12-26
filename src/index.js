@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Join from './pages/Join';
 import Nav from './component/Nav';
 import Admin from './pages/Admin';
+import Members from './pages/Members';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -38,11 +39,11 @@ const routes = createBrowserRouter([
     errorElement : <NotFound/>,
 
     children : [
-      {path : '/nav', element : <Nav/>},
-      {path : '/login', element : <Login/>},
+      // {path : '/nav', element : <Nav/>},
       {path : '/join', element : <Join/>},
-      {path : '/admin', element : <Admin/>}
-    ]
+      {path : '/admin', element : <Admin/>},
+      {path : '/members', element: <Members/>}
+    ],
   }
 ])
 root.render(

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
     /* v2.0 | 20110126
@@ -58,7 +58,7 @@ const GlobalStyle = createGlobalStyle`
     button{
         cursor: pointer;
     }
-    .container{
+    .loginContainer{
         max-width: 1280px;
         margin: 70px auto 100px;
     }
@@ -98,8 +98,15 @@ const GlobalStyle = createGlobalStyle`
     }
     }
 
+    .rightSection{
+        padding-left: 330px;
+        .container{
+            padding: 50px;
+        }
+    }
 
 `
+
 
 
 export default GlobalStyle;
