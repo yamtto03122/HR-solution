@@ -12,6 +12,7 @@ import Join from './pages/Join';
 import Nav from './component/Nav';
 import Admin from './pages/Admin';
 import Members from './pages/Members';
+import Layout from './pages/Layout';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -35,16 +36,18 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const routes = createBrowserRouter([
   {
     path : '/',
-    element : <App />,
+    element : <Layout />,
     errorElement : <NotFound/>,
 
     children : [
-      // {path : '/nav', element : <Nav/>},
+      // {path : '/nav', element : <Nav/>}, app.js에서 제외시킬 컴포넌트만 여기 쓰는거다.
       {path : '/join', element : <Join/>},
       {path : '/admin', element : <Admin/>},
+      {path : '/', element : <Home/>},
       {path : '/members', element: <Members/>}
-    ],
-  }
+    ]
+  },
+  {path : '/login', element : <Login/>}
 ])
 root.render(
   <React.StrictMode>

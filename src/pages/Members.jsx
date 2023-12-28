@@ -2,9 +2,13 @@ import React from 'react';
 
 function Members() {
     return (
-        <div>
-            Member
-        </div>
+        <>
+            <div className='rightSection'>
+                <div className='container'>
+                    Member
+                </div>
+            </div>
+        </>
     );
 }
 

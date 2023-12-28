@@ -20,7 +20,7 @@ function Nav() {
         })
     },[])
 
-    const movePage = () =>{
+    const moveMembers = () =>{
         navigate('/members');
     }
 
@@ -32,7 +32,7 @@ function Nav() {
             </>
             <ul>
                 <li><Link to='/'>홈피드</Link></li>
-                <li onClick={movePage}>구성원</li>
+                <li onClick={moveMembers}>구성원</li>
                 <li><Link to='/'>근무</Link></li>
                 <li><Link to='/'>휴가</Link></li>
                 <li><Link to='/'>급여</Link></li>
@@ -58,7 +58,7 @@ const NavContaier = styled.nav`
     display: flex;
     flex-direction: column;
     padding: 50px 30px;
-    background-color: #f1f1f1;
+    background-color: #f5f5f5;
     .logoutBtn{
 
     }

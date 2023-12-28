@@ -2,8 +2,10 @@ import React from 'react';
 
 function TabMenu() {
     return (
-        <div>
-            홈피드
+        <div className='tabMenu'>
+            <ul>
+                <li>홈피드</li>
+            </ul>
         </div>
     );
 }

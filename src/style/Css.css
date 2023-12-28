@@ -1,0 +1,230 @@
+/*Nav - UserDatas*/
+.userItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 25px 0;
+    .timerZone{
+        width: 100%;
+        box-sizing: border-box;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 15px;
+        font-size: 15px;
+        position: relative;
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0, 0.1);
+        .watchMSG{
+            font-weight: 500;
+        }
+        .workTimer{
+            font-size: 23px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        .downArrow{
+            position: absolute;
+            transform: translateY(-50%);
+            top: 50%;
+            right: 23px;
+            color: #888888;
+        }
+        }
+    .userDataBtnWrap{
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 10px;
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0, 0.1);
+        .userWrap{
+            width: 100%;
+            border: 1px solid #0cc321;
+            border-radius: 10px;
+            background: #f9f9f9;
+            .userDatas{
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                margin: 10px;
+                .userInfo{
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    .userPhoto{
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 10px;
+                        border: 1px solid #d9d9d9;
+                        box-sizing: border-box;
+                        overflow: hidden;
+                    }
+                    img{
+                        width: 100%;
+                    }
+                    font{
+                        font-size: 17px;
+                        font-weight: 700;
+                    }
+                }
+                .workingCDT{
+                    padding: 5px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    font-weight: 900;
+                }
+                .working{
+                    background: rgba(17,117,17,0.2);
+                    border: 1px solid rgba(17,117,17,0.5);
+                    color: #156c00;
+                }
+                .notWorking{
+                    background: #ededed;
+                    border: 1px solid #666666;
+                    color: #777777;
+
+                }
+
+            }
+            .startTime{
+                margin: 10px;
+                color: #888888;
+                font-size: 15px;
+                font-weight: 600;
+            }
+        }
+        .btnWrap{
+            width: 100%;
+            .workBtn{
+                width: 100%;
+                padding: 15px;
+                border-radius: 10px;
+                border: none;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 700;
+            }
+            .stop{
+                background: #0cc321;
+            }
+            .start{
+                background: rgb(12,195,33);
+                background: linear-gradient(90deg, rgba(12,195,33,1) 0%, rgba(9,206,199,1) 100%);
+            }
+        }
+    }
+    form{
+        width: 100%;
+        .workTimeWrap{
+            .timerZone{
+                display: flex ;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                .workTimer{
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+                .stopBtn{
+                    background-color: #0077eb;
+                }
+            }
+            button{
+                width: 100%;
+                padding: 13px;
+                border-radius: 5px;
+                border: none;
+                color: #ffffff;
+                font-size: 17px;
+                font-weight: bold;
+            }
+            .startBtn{
+                    background-color: #0077eb;
+            }
+        }
+
+    }
+}
+
+/*공지사항*/
+.tabMenu{
+        border-bottom: 1px solid #d9d9d9;
+        padding: 25px 50px;
+        font-size: 23px;
+        font-weight: 700;
+        ul{
+            li{
+                color: #888888;
+            }
+        }
+}
+
+.notice{
+    .noticeTTl{
+        padding-bottom: 10px;
+        margin: 0 auto 40px;
+        font-weight: 700;
+        color: #888888;
+        font-size: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .writerWrap{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 15px 0;
+        .writerImg{
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            border: 1px solid #d9d9d9;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .postTTl{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 45px;
+            .ttlWrap{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                .ttl{
+                    font-size: 17px;
+                    font-weight: 700;
+                }
+                .postingTime{
+                    color: #888888;
+                    font-size: 15px;
+                }
+            }
+            .writer{
+                color: #888888;
+                font-size: 15px;
+            }
+        }
+    }
+    .postWrap{
+        margin: 0 0 0 55px;
+        .post {
+            color: #555555;
+            margin-bottom: 20px;
+        }
+        .postCheck {
+            border: 1px solid #d9d9d9;
+            display: inline-block;
+            padding: 3px 7px;
+            border-radius: 100px;
+            font-size: 14px;
+        }
+
+    }
+}

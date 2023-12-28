@@ -1,12 +1,13 @@
 import './App.css';
+import './style/Css.css';
 import AuthContext, { AuthContextProvider, useAuthContext } from './context/AuthContext';
 import GlobalStyle from './style/GlobalStyle';
 import Home from './pages/Home'
 import Login from './pages/Login';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Navigate, Routes, Route, Outlet } from 'react-router-dom';
+import { Navigate, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import Nav from './component/Nav';
-import { useContext } from 'react';
+import "react-quill/dist/quill.snow.css";
 
 const queryClient = new QueryClient();
 
@@ -28,14 +29,15 @@ const queryClient = new QueryClient();
 // }
 
 
-
 function App() {
+    const location = useLocation();
+    const showNav = location.pathname !== '/login'
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <AuthContextProvider>
-          <Nav/>
+          {showNav && <Nav/>}
           <Routes>
             <Route path="/" element={
               <ProtectedRoute><Home /></ProtectedRoute>

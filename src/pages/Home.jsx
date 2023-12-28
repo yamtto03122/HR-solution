@@ -2,14 +2,15 @@ import React from 'react';
 import Nav from '../component/Nav';
 import { Route, Routes } from 'react-router-dom';
 import TabMenu from '../component/TabMenu';
+import Notice from './Notice';
 
 function Home() {
     return (
         <>
-            {/* <Nav/> */}
             <div className='rightSection'>
-                <div className='container'>
                     <TabMenu/>
+                <div className='container'>
+                    <Notice/>
                 </div>
             </div>
             

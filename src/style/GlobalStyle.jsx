@@ -101,7 +101,42 @@ const GlobalStyle = createGlobalStyle`
     .rightSection{
         padding-left: 330px;
         .container{
-            padding: 50px;
+            padding: 20px 50px 70px;
+        }
+    }
+
+    .mask{
+        position: fixed;
+        width: calc(100% - 330px);
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        left: 330px;
+        top: 73px;
+    }
+
+    .AdminWriteWrap{
+        width: 85%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        h2{
+            font-size: 20px;
+            border-bottom: 1px solid #9a9a9a;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        input{
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .submitBtn{
+            float: right;
+            width: 70px;
+            padding: 5px 0;
         }
     }
 
