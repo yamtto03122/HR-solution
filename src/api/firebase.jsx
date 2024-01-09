@@ -4,7 +4,6 @@ import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStat
 import { ref, get, set, getDatabase, remove, child } from 'firebase/database';
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuid } from 'uuid' //고유 식별자를 생성해주는 패키지
-import { StopWorkTime } from "../component/StopWorkTime";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,7 +15,7 @@ const firebaseConfig = {
     authDomain : process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
     projectId : process.env.REACT_APP_FIREBASE_PROJECT_ID,
     databaseURL : process.env.REACT_APP_FIREBASE_DB_URL,
-    storageBucket : process.env.REACT_APP_STORAGEBUCKET,
+    storageBucket : process.env.REACT_APP_STORAGEBUCKET
 };
 
 // Initialize Firebase
@@ -231,6 +230,16 @@ export function clockOut(user) {
             return ''
         }
     })
+}
+
+//공지사항 등록하기
+export async function createNotice(contents){ //등록버튼 눌렀을때 얘가 실행만 됨
+    const db = getDatabase();
+    // const now = new Date();
+    // const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    console.log(contents);
+    set(ref(db, `notice/${contents[0]}`),contents)
+
 }
 
 

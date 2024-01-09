@@ -114,7 +114,7 @@ const GlobalStyle = createGlobalStyle`
         top: 73px;
     }
 
-    .AdminWriteWrap{
+    .writeBoxWrap{
         width: 85%;
         position: absolute;
         left: 50%;
@@ -123,11 +123,30 @@ const GlobalStyle = createGlobalStyle`
         padding: 20px;
         background: #fff;
         border-radius: 10px;
-        h2{
-            font-size: 20px;
+        .writeTTlBox{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #9a9a9a;
             padding-bottom: 20px;
             margin-bottom: 20px;
+            h2{
+                font-size: 20px;
+            }
+            .closeBtn{
+                border: none;
+                background: transparent;
+                .closeIco{
+                    font-size: 30px;
+                }
+            }
+            .closeBtn:hover{
+                    cursor: pointer;
+                    .closeIco:hover{
+                    cursor: pointer;
+                    }
+            }
+
         }
         input{
             width: 100%;
@@ -138,6 +157,12 @@ const GlobalStyle = createGlobalStyle`
             width: 70px;
             padding: 5px 0;
         }
+    }
+    .ql-toolbar.ql-snow {
+        height: 40px;
+    }
+    .ql-container{
+        height: calc(100% - 40px);
     }
 
 `
