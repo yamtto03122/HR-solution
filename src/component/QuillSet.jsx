@@ -83,6 +83,8 @@ export function QuillSet({ onClose }) {
         alert('등록되었습니다.');
         } catch (error) {
         console.log(error);
+        }finally{
+            onClose();
         }
     };
 

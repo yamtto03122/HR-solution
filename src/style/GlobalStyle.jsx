@@ -166,9 +166,6 @@ const GlobalStyle = createGlobalStyle`
             padding: 5px 0;
         }
     }
-    .ql-toolbar.ql-snow {
-        height: 40px;
-    }
     .ql-container{
         height: calc(100% - 40px);
         font-size: 16px;
