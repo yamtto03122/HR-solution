@@ -127,7 +127,7 @@ const GlobalStyle = createGlobalStyle`
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #9a9a9a;
+            //border-bottom: 1px solid #9a9a9a;
             padding-bottom: 20px;
             margin-bottom: 20px;
             h2{
@@ -151,6 +151,14 @@ const GlobalStyle = createGlobalStyle`
         input{
             width: 100%;
             margin-bottom: 20px;
+            height: 37px;
+            font-size: 18px;
+            border: none;
+            border-bottom: 1px solid #979797;
+            outline: none;
+            padding-bottom: 10px;
+            box-sizing: border-box;
+            line-height: 30px;
         }
         .submitBtn{
             float: right;
@@ -163,6 +171,7 @@ const GlobalStyle = createGlobalStyle`
     }
     .ql-container{
         height: calc(100% - 40px);
+        font-size: 16px;
     }
 
 `

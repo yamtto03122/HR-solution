@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onUserState } from '../api/firebase';
-import { IoClose } from "react-icons/io5";
-import QuillSet from '../component/QuillSet';
+import { QuillSet } from '../component/QuillSet';
+import { ModalPortal } from '../component/ModalPortal';
 
 function Notice() {
     const [user, setUser] = useState();
-    const navigate = useNavigate();
 
-    const closeBtn = (e) => {
-        console.log('click')
-        e.preventDefault();
+    const [isOpen, setIsOpen] = useState(false);
+
+    function noticeAdminBtn() {
+        console.log(isOpen);
+        setIsOpen(true);
+    }
+    function handleCloseModal() {
+        setIsOpen(false);
     }
 
     useEffect(() => {
@@ -19,15 +23,17 @@ function Notice() {
             setUser(user);
         })
     }, [])
-
-    const noticeAdminBtn = () => {
-        navigate('./noticwWrite');
-    }
     return (
         <div className='notice'>
             <div className='noticeTTl'>공지사항
             {user && user.isAdmin && (
                 <button className='noticeAdmin' onClick={noticeAdminBtn}>작성하기</button>
+            )}
+
+            {isOpen && (
+                    <ModalPortal>
+                        <QuillSet onClose={handleCloseModal} />
+                    </ModalPortal>
             )}
             </div>
             <div className='writerWrap'>
@@ -43,17 +49,6 @@ function Notice() {
             <div className='postWrap'>
                 <div className='post'>내용내용내용</div>
                 <div className='postCheck'>✅ 5</div>
-            </div>
-            <div className='mask'>
-                <div className='writeBoxWrap'>
-                    <div className='writeTTlBox'>
-                        <h2>공지사항 작성</h2>
-                        <button className='closeBtn' onClick={closeBtn}><IoClose className='closeIco'/></button>
-                    </div>
-                    <div>
-                        <QuillSet/>
-                    </div>
-                </div>
             </div>
         </div>
     );
