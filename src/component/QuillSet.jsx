@@ -59,7 +59,7 @@ export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달
     // const onChange = (e) => { //타겟이 없기때문에 매개변수 e가 들어가줘야함
     //     const {name, value} = e.target;
  
-    //     setContents((prevContents)=>({ ...prevContents,[name] : value }))
+    //     setnotice((prevnotice)=>({ ...prevnotice,[name] : value }))
     // }
 
     const [content, setContent] = useState('');
@@ -74,15 +74,17 @@ export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달
         const now = new Date();
         const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
         const userName = user.displayName
-        const contents = {
+        const userImg = user.photoURL
+        const notice = {
             title,
             content,
             dateKey,
-            userName
+            userName,
+            userImg
         }
-        console.log(contents)
+        console.log(notice)
         try {
-        await createNotice(contents).then((res) => console.log(res));
+        await createNotice(notice).then((res) => console.log(res));
         alert('등록되었습니다.');
         } catch (error) {
         console.log(error);

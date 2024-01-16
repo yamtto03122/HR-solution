@@ -4,55 +4,35 @@ import AuthContext, { AuthContextProvider, useAuthContext } from './context/Auth
 import GlobalStyle from './style/GlobalStyle';
 import Home from './pages/Home'
 import Login from './pages/Login';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { Navigate, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import Nav from './component/Nav';
 import "react-quill/dist/quill.snow.css";
 
 const queryClient = new QueryClient();
 
-// // 회원 인증
-// const GetHome = () => {
-//   const { user } = useAuthContext();
-//   if(!user){
-//     return <Navigate to='/login' replace />
-//   }
-//   return <Navigate to='/' />;
-// }
-
-//               {/* 로그인 성공시에만 메인페이지로 이동 */}
-//             </Routes>
-//         </AuthContextProvider>
-//       </QueryClientProvider>
-//     </>
-//   );
-// }
-
-
 function App() {
     const location = useLocation();
     const showNav = location.pathname !== '/login'
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient} >
         <GlobalStyle />
         <AuthContextProvider>
-          {showNav && <Nav/>}
-          <Routes>
-            <Route path="/" element={
-              <ProtectedRoute><Home /></ProtectedRoute>
-            } />
-            {/* 로그인 성공시 Home페이지로 이동 */}
+            {showNav && <Nav/>}
+            <Routes>
+              <Route path="/" element={
+                <ProtectedRoute><Home /></ProtectedRoute>
+              } />
+              {/* 로그인 성공시 Home페이지로 이동 */}
 
-            <Route path='/login' element={
-              <LoginRedirect><Login /></LoginRedirect>
-            } />
-            
-          </Routes>
-          <Outlet/>
+              <Route path='/login' element={
+                <LoginRedirect><Login /></LoginRedirect>
+              } />
+              
+            </Routes>
+            <Outlet/>
         </AuthContextProvider>
       </QueryClientProvider>
-    </>
   );
 }
 

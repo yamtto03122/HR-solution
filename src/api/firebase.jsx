@@ -232,35 +232,53 @@ export function clockOut(user) {
 }
 
 //공지사항 등록하기
-export async function createNotice(contents){ //등록버튼 눌렀을때 얘가 실행만 됨
+export async function createNotice(notice){ //등록버튼 눌렀을때 얘가 실행만 됨
     const db = getDatabase();
     // const now = new Date();
     // const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-    console.log(contents);
-    const path = `notice/${contents.title}`
+    console.log(notice);
+    const path = `notice/${notice.title}`
     console.log(path);
-    set(ref(db, path),contents);
+    set(ref(db, path),notice);
 
 }
 
 //파이어베이스에서 게시글 목록 가져오기
 export async function getNoticeList(){
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `notice/`)).then((snapshot) => {
+    // try {
+    //     const dbRef = ref(getDatabase());
+    //     const snapshot = await get(child(dbRef, `notice/`)); //async로 데이터를 참조하려면 awite로 불러올때까지 기다려야함
+    //     //getNoticeList를 호출하게 되면 firevase에 있는 notice라는 db에접근을 해서 리스트틀 뽑겠죠?
+    //     //그걸 비동기방식으로 호출해주는게 async 구요, 데이터를 충분히 받아와서 snpashot이라는 변수에 담길때까지 시간이 걸리는데
+    //     //await가 없으면 promise로 호출한 결과물을 기다리지 않고 바로 출력해요. 그러니까 값이 없는걸로 표현이 되겠죠
+    //     //값을 받아오고 -> 출력 이어야 하는데 출력 -> 값을 받아오는 형태가 되니까요
+    //     if (snapshot.exists()) {
+    //         return snapshot.val();
+    //     } else {
+    //         console.log("No data");
+    //         return null; 
+    //     }
+    // } catch (error) {
+    //     console.error(error);
+    //     throw error; 
+    // }
+
+    const db = getDatabase();
+    return get(ref(db, 'notice')).then((snapshot) => {
         if (snapshot.exists()){
-            console.log(snapshot.val());
-        return snapshot.val();
+        console.log(Object.values(snapshot.val()))
+        return Object.values(snapshot.val());
         } else {
-            console.log("No data available");
+            return [] //아무것도 없으면 빈 배열을 내보내라
         }
-    }).catch((error) => {
-        console.error(error);
-    })
+        }).catch((error) => {
+            console.error(error);
+        })
 }
 
 // 공지 삭제하기
-export async function deleteNotice(contents){
+export async function deleteNotice(notice){
     const db = getDatabase();
-    return remove(ref(db, `notice/${contents.title}`));
+    return remove(ref(db, `notice/${notice.title}`));
 }
 
