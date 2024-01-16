@@ -39,7 +39,6 @@ export async function login(){
         const user = loginPopup.user; //user =  로그인된 상태의 유저
         //위의 코드로 로그인이 성공하는 순간 loginPopup 에는 로그인한 정보가 user라는 변수에 담기게된다.
         console.log(user);
-        const userName = user;
 
         return user; //로그인된 유저의 정보를 다른 곳에서 참조할 수 있도록 반환함
     }catch(error){
@@ -238,7 +237,9 @@ export async function createNotice(contents){ //등록버튼 눌렀을때 얘가
     // const now = new Date();
     // const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     console.log(contents);
-    set(ref(db, `notice/${contents[0]}`),contents)
+    const path = `notice/${contents.title}`
+    console.log(path);
+    set(ref(db, path),contents);
 
 }
 

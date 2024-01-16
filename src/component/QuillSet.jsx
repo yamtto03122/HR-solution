@@ -5,7 +5,7 @@ import { createNotice, onUserState } from '../api/firebase';
 import { IoClose } from "react-icons/io5";
 
 
-export function QuillSet({ onClose }) {
+export function QuillSet({ onClose },{user}) {
 
     //퀼 설정 start
         const modules = useMemo(()=> { // useMemo를 사용하여 modules가 렌더링 시 에디터가 사라지는 버그를 방지
@@ -68,16 +68,20 @@ export function QuillSet({ onClose }) {
         e.preventDefault();
         setTitle(e.currentTarget.value);
     };
+    console.log(user);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async(user) => {
         const now = new Date();
         const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        const userName = user.displayName
         const contents = {
             title,
             content,
-            dateKey
+            dateKey,
+            userName
         }
         console.log(contents)
+        console.log(user.displayName);
         try {
         await createNotice(contents).then((res) => console.log(res));
         alert('등록되었습니다.');
