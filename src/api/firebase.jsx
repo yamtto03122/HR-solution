@@ -59,7 +59,7 @@ export function onUserState(callback){
             }catch(error){
                 console.error(error);
             }
-            console.log('success');
+            //console.log('success');
         }else{ //로그인된 상태가 아니라면
             callback(null); //빈 값으로 보내라
         }
@@ -70,13 +70,13 @@ export function onUserState(callback){
 async function adminUser(user){
     try{
         const snapshot = await get(ref(database, 'admin')); //firebase 안의 database안에 admin폴더를 검색함
-        console.log(snapshot)
+        //console.log(snapshot)
         
         if(snapshot.exists()){//snapshot.exists() : snapshot 안에 데이터가 있음을 의미함
             
             const admins = snapshot.val(); //스냅샷 안에 벨류 값을 찾아내라 (admin폴더 안에 데이터 목록들을 검색)
             const isAdmin = admins.includes(user.email); //검색된 admins에 현재 로그인된 사용자의 이메일과 일치하는 이메일이 있는지 확인 (관리자인지 아닌지 확인)
-            console.log(isAdmin)
+            //console.log(isAdmin)
             return{ ...user, isAdmin } //만든 사이트에 내가 관리자로 로그인했음을 알려준다.
             //원래 사용자 정보와 새 정보와 isAdmin 변수를 새 배열에 추가하여 업데이트 후 반환한다.
         }
@@ -243,4 +243,24 @@ export async function createNotice(contents){ //등록버튼 눌렀을때 얘가
 
 }
 
+//파이어베이스에서 게시글 목록 가져오기
+export async function getNoticeList(){
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `notice/`)).then((snapshot) => {
+        if (snapshot.exists()){
+            console.log(snapshot.val());
+        return snapshot.val();
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    })
+}
+
+// 공지 삭제하기
+export async function deleteNotice(contents){
+    const db = getDatabase();
+    return remove(ref(db, `notice/${contents.title}`));
+}
 

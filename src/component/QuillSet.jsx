@@ -5,7 +5,8 @@ import { createNotice, onUserState } from '../api/firebase';
 import { IoClose } from "react-icons/io5";
 
 
-export function QuillSet({ onClose },{user}) {
+export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달하다 보니 전달이 안되서 합쳤습니다.
+    //Notice에서 <QuillSet onClose={handleCloseModal} user={user} /> user값을 추가했어요 넘어올 값이 있어야죠?
 
     //퀼 설정 start
         const modules = useMemo(()=> { // useMemo를 사용하여 modules가 렌더링 시 에디터가 사라지는 버그를 방지
@@ -68,9 +69,8 @@ export function QuillSet({ onClose },{user}) {
         e.preventDefault();
         setTitle(e.currentTarget.value);
     };
-    console.log(user);
 
-    const handleSubmit = async(user) => {
+    const handleSubmit = async() => { //displayName react-quill을 가르키고 있어서 매개변수 user삭제
         const now = new Date();
         const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
         const userName = user.displayName
@@ -81,7 +81,6 @@ export function QuillSet({ onClose },{user}) {
             userName
         }
         console.log(contents)
-        console.log(user.displayName);
         try {
         await createNotice(contents).then((res) => console.log(res));
         alert('등록되었습니다.');
