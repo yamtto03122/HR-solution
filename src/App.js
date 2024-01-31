@@ -4,20 +4,18 @@ import AuthContext, { AuthContextProvider, useAuthContext } from './context/Auth
 import GlobalStyle from './style/GlobalStyle';
 import Home from './pages/Home'
 import Login from './pages/Login';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { Navigate, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import Nav from './component/Nav';
 import "react-quill/dist/quill.snow.css";
 
-const queryClient = new QueryClient();
 
 function App() {
     const location = useLocation();
     const showNav = location.pathname !== '/login'
   return (
-      <QueryClientProvider client={queryClient} >
-        <GlobalStyle />
+      
         <AuthContextProvider>
+        <GlobalStyle />
             {showNav && <Nav/>}
             <Routes>
               <Route path="/" element={
@@ -32,7 +30,7 @@ function App() {
             </Routes>
             <Outlet/>
         </AuthContextProvider>
-      </QueryClientProvider>
+      
   );
 }
 

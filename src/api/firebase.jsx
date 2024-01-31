@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-import { ref, get, set, getDatabase, remove, child } from 'firebase/database';
+import { ref, get, set, getDatabase, remove, child, push } from 'firebase/database';
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuid } from 'uuid' //고유 식별자를 생성해주는 패키지
 // TODO: Add SDKs for Firebase products that you want to use
@@ -235,11 +235,10 @@ export function clockOut(user) {
 export async function createNotice(notice){ //등록버튼 눌렀을때 얘가 실행만 됨
     const db = getDatabase();
     // const now = new Date();
-    // const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    // const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
     console.log(notice);
-    const path = `notice/${notice.title}`
-    console.log(path);
-    set(ref(db, path),notice);
+    const path = `notice/`
+    push(ref(db, path),notice);
 
 }
 
@@ -260,14 +259,14 @@ export async function getNoticeList(){
     //     }
     // } catch (error) {
     //     console.error(error);
-    //     throw error; 
     // }
 
     const db = getDatabase();
     return get(ref(db, 'notice')).then((snapshot) => {
         if (snapshot.exists()){
-        console.log(Object.values(snapshot.val()))
-        return Object.values(snapshot.val());
+            const data = snapshot.val();
+        return Object.values(data);
+        
         } else {
             return [] //아무것도 없으면 빈 배열을 내보내라
         }
@@ -276,9 +275,11 @@ export async function getNoticeList(){
         })
 }
 
-// 공지 삭제하기
-export async function deleteNotice(notice){
+//공지 삭제하기
+export async function deleteNotice(noticeData, id){
+    //const id = noticeData
+    console.log(noticeData);
     const db = getDatabase();
-    return remove(ref(db, `notice/${notice.title}`));
+    return remove(ref(db, `notice/${id}`));
 }
 

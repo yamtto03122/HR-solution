@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getNoticeList, onUserState } from '../api/firebase';
+import { deleteNotice, getNoticeList, onUserState } from '../api/firebase';
 import { QuillSet } from '../component/QuillSet';
 import { ModalPortal } from '../component/ModalPortal';
-import { useQuery } from '@tanstack/react-query';
-import NoticeItem from '../component/NoticeItem';
+import ReactHtmlParser from 'html-react-parser';
+import { useNavigate } from 'react-router-dom';
+
 
 function Notice() {
+    const navigate = useNavigate();
     const [user, setUser] = useState();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -25,41 +27,68 @@ function Notice() {
         })
     }, [])
 
-
+    
+    //데이터를 정렬해서 담을 변수
     const [noticeList, setNoticeList] = useState([]);
+
     const [isItem, setIsItem] = useState(true);
 
-    // useEffect(() => {
-    //     const fetchNoticeData = async () => {
-    //         // Notice에서 async로 getNoticeList()호출 ->
-    //         // getNoticeList()에서 await로 데이터를 받아올 때 까지 Notice async 함수 정지 ->
-    //         // 데이터 받아온 후 Notice async 함수실행
-    //       try {
-    //         const noticeListData = await getNoticeList();
-    //         if (noticeListData) {
-    //           setNoticeList(noticeListData);
-    //           setIsItem(true);
-    //         //   const map = new Map(Object.entries(noticeListData));
-    //         //   console.log(map)
-    //         console.log(noticeListData)
-    //           setNoticeList(noticeListData)
-    //         } else {
-    //           // Handle the case where noticeListData is undefined
-    //           console.log('No data');
-    //         }
-    //       } catch (error) {
-    //         console.error(error);
-    //       }
-    //     };
+    useEffect(() => {
+        const fetchNoticeData = async () => {
+            // Notice에서 async로 getNoticeList()호출 ->
+            // getNoticeList()에서 await로 데이터를 받아올 때 까지 Notice async 함수 정지 ->
+            // 데이터 받아온 후 Notice async 함수실행
+          try {
+            const asyncNoticeData = await getNoticeList();
+            if (asyncNoticeData) {
+              setIsItem(true);
+              const sortedData = asyncNoticeData.sort().reverse();
+              setNoticeList(sortedData)
+                //setNoticeList(asyncNoticeData)
+                
+            } else {
+              // Handle the case where noticeListData is undefined
+              console.log('No data');
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        };
     
-    //     fetchNoticeData();
-    //   }, []);
+        fetchNoticeData();
+      },[]);
 
-      const { isLoading, error, data : notice } = useQuery({queryKey : ['notice'], queryFn : getNoticeList})
-      console.log(notice);
-      if (isLoading) return 'Loading...';
+      console.log(noticeList)
+    //   noticeList.map((noticeData) => (
+    //     console.log(noticeData.title)
+    //     ))
 
-      if (error) return 'An error has occurred: ' + error.message;
+    //   const { isLoading, error, data : notice } = useQuery({queryKey : ['notice'], queryFn : getNoticeList})
+    //   console.log(notice);
+    //   if (isLoading) return 'Loading...';
+    //   if (error) return 'An error has occurred: ' + error.message;
+
+
+    //삭제
+    const removeNotice = async(id) => {
+        
+        if(window.confirm('삭제하시겠습니까?')){
+            try{
+                await deleteNotice().then((res)=>{
+                    alert('삭제되었습니다.')
+                    navigate('/',{replace:true});
+                });
+            }catch (error) {
+                console.error(error);
+            }
+
+        }
+      }
+
+    
+
+
+  
     
     return (
         <div className='notice'>
@@ -74,29 +103,39 @@ function Notice() {
                     </ModalPortal>
             )}
             </div>
-            {!isItem && <p>공지사항이 없습니다.</p>}
-            {isItem &&(
-            <div>
-                <ul>
-                    {notice && notice.map((notice) => {
-                        <NoticeItem key={notice.title}/>
-                    })}
+                {/* {isLoading && <p>Loading...</p>} 만약 로딩중이라면, 로딩이라고 뜨고, */}
+                {/* {error && <p>An error has occurred.</p>} */}
+                <ul className='noticeUl'>
+                    {noticeList.map((noticeData, index) => ( //notice 배열의 한 요소를 호출해서 map으로 새 배열을 생성하고 그 안에 값은 noticeData 라는 매개변수로 받아옵니다
+                        <li key={noticeData.id} index={index} id={noticeData.id} className='noticeLi'>
+                            <div className='noticeWrap'>
+                                <div className='writerWrap'>
+                                <div className='writerImg'><img src={noticeData.userImg} alt='{noticeData.userImg}'/></div>
+                                <div className='postTTl'>
+                                    <div className='ttlWrap'>
+                                        <div className='ttl'>{noticeData.title}</div>
+                                        <div className='postingTime'>{noticeData.dateKey}</div>
+                                    </div>
+                                    <div className='writer'>{noticeData.userName}</div>
+                                </div>
+                                </div>
+                                <div className='postWrap'>
+                                    <div className='post'>{ReactHtmlParser(noticeData.content)}</div>
+                                    <div className='postBtnWrap'>
+                                        <div className='postBtn'>✅ 5</div>
+
+                                        {user && user.isAdmin && (
+                                        <div className='postAdminBtn'>
+                                            <div className='postBtn'>수정</div>
+                                            <button onClick={()=>removeNotice(noticeData.id)} className='postBtn'>삭제</button>
+                                        </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    ))}
                 </ul>
-                {/* <div className='writerWrap'>
-                    <div className='writerImg'></div>
-                    <div className='postTTl'>
-                        <div className='ttlWrap'>
-                            <div className='ttl'>{noticeList.title}</div>
-                            <div className='postingTime'>시간</div>
-                        </div>
-                        <div className='writer'>글쓴이</div>
-                    </div>
-                </div>
-                <div className='postWrap'>
-                    <div className='post'>내용내용내용</div>
-                    <div className='postCheck'>✅ 5</div>
-                </div> */}
-            </div>)}
         </div>
     );
 }

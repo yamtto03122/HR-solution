@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { createNotice, onUserState } from '../api/firebase';
-
+import { v4 as uuid } from 'uuid' //고유 식별자를 생성해주는 패키지
 import { IoClose } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 
 export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달하다 보니 전달이 안되서 합쳤습니다.
+    const navigation = useNavigate();
     //Notice에서 <QuillSet onClose={handleCloseModal} user={user} /> user값을 추가했어요 넘어올 값이 있어야죠?
 
     //퀼 설정 start
@@ -61,6 +63,7 @@ export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달
  
     //     setnotice((prevnotice)=>({ ...prevnotice,[name] : value }))
     // }
+    
 
     const [content, setContent] = useState('');
     console.log(content);
@@ -73,14 +76,17 @@ export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달
     const handleSubmit = async() => { //displayName react-quill을 가르키고 있어서 매개변수 user삭제
         const now = new Date();
         const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        const id = uuid();
         const userName = user.displayName
         const userImg = user.photoURL
         const notice = {
+            id,
             title,
             content,
             dateKey,
             userName,
-            userImg
+            userImg,
+            vote:0
         }
         console.log(notice)
         try {
@@ -90,6 +96,7 @@ export function QuillSet({ onClose , user}) { //오브젝트를 나눠서 전달
         console.log(error);
         }finally{
             onClose();
+            navigation('/', { replace :true });
         }
     };
 

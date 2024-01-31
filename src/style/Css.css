@@ -175,56 +175,79 @@
         display: flex;
         justify-content: space-between;
     }
-    .writerWrap{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 15px 0;
-        .writerImg{
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            border: 1px solid #d9d9d9;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        .postTTl{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            height: 45px;
-            .ttlWrap{
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                .ttl{
-                    font-size: 17px;
-                    font-weight: 700;
+    .noticeUl{
+        .noticeLi{
+            margin-bottom: 40px;
+                .writerWrap{
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin: 10px 0;
+                    .writerImg{
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 10px;
+                        border: 1px solid #d9d9d9;
+                        box-sizing: border-box;
+                        overflow: hidden;
+                    }
+                    .postTTl{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        height: 45px;
+                        .ttlWrap{
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            .ttl{
+                                font-size: 16px;
+                                font-weight: 700;
+                            }
+                            .postingTime{
+                                color: #888888;
+                                font-size: 14px;
+                            }
+                        }
+                        .writer{
+                            color: #888888;
+                            font-size: 14px;
+                        }
+                    }
                 }
-                .postingTime{
-                    color: #888888;
-                    font-size: 15px;
-                }
-            }
-            .writer{
-                color: #888888;
-                font-size: 15px;
-            }
-        }
-    }
-    .postWrap{
-        margin: 0 0 0 55px;
-        .post {
-            color: #555555;
-            margin-bottom: 20px;
-        }
-        .postCheck {
-            border: 1px solid #d9d9d9;
-            display: inline-block;
-            padding: 3px 7px;
-            border-radius: 100px;
-            font-size: 14px;
-        }
+                .postWrap{
+                    margin: 0 0 0 55px;
+                    .post {
+                        color: #555555;
+                        margin-bottom: 15px;
+                        font-size: 15px;
+                        white-space: normal;
+                        word-break: keep-all;
+                        line-height: 1.5;
+                    }
+                    .postBtnWrap{
+                        display: flex;
+                        justify-content: space-between;
+                        .postBtn {
+                            border: 1px solid #d9d9d9;
+                            display: flex;
+                            align-items: center;
+                            padding: 0 7px;
+                            border-radius: 100px;
+                            font-size: 13px;
+                            height: 20px;
+                        }
+                        .postAdminBtn {
+                            display: flex;
+                            gap: 10px;
+                        }
 
+                    }
+
+                }
+            
+        }
     }
+        
+    
 }
